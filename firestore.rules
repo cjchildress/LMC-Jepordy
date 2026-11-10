@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function host() { return request.auth != null && request.auth.uid == 'REPLACE_WITH_HOST_USER_UID'; }
+    function future(expiry, hours) { return expiry is int && expiry > request.time.toMillis() && expiry <= request.time.toMillis() + hours * 3600000 + 60000; }
+    function roomFields(d) {
+      return d.keys().hasOnly(['ownerId','displayKey','codeHash','codeExpires','expiresAt','paired','revision','mutationId','hostHash','snapshotJson'])
+        && d.ownerId == request.auth.uid && d.displayKey.matches('^[a-f0-9]{64}$') && d.codeHash.matches('^[a-f0-9]{64}$')
+        && d.hostHash.matches('^[a-f0-9]{64}$') && d.snapshotJson is string && d.snapshotJson.size() <= 800000
+        && d.revision is int && d.revision >= 0 && d.paired is bool;
+    }
+    function displayFields(d) {
+      return d.keys().hasOnly(['ownerId','roomId','expiresAt','revision','paired','view'])
+        && d.ownerId == request.auth.uid && d.roomId is string && d.revision is int && d.paired is bool
+        && d.view is map && d.view.keys().hasOnly(['title','round','teams','activeTeam','screen','board','timer','clue','final']);
+    }
+    match /lmcRooms/{id} {
+      allow get: if host() && resource.data.ownerId == request.auth.uid;
+      allow list: if false;
+      allow create: if host() && roomFields(request.resource.data) && future(request.resource.data.expiresAt,8)
+        && future(request.resource.data.codeExpires,1) && request.resource.data.codeExpires <= request.time.toMillis()+600000
+        && request.resource.data.revision == 0 && request.resource.data.paired == false;
+      allow update: if host() && resource.data.ownerId == request.auth.uid && roomFields(request.resource.data)
+        && request.time.toMillis() < resource.data.expiresAt
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['snapshotJson','mutationId','hostHash','paired','revision'])
+        && request.resource.data.revision == resource.data.revision + 1
+        && (resource.data.paired == false || request.resource.data.paired == true);
+      allow delete: if host() && resource.data.ownerId == request.auth.uid;
+    }
+    match /lmcDisplays/{key} {
+      allow get: if key.matches('^[a-f0-9]{64}$') && request.time.toMillis() < resource.data.expiresAt;
+      allow list: if false;
+      allow create: if host() && displayFields(request.resource.data) && future(request.resource.data.expiresAt,8)
+        && getAfter(/databases/$(database)/documents/lmcRooms/$(request.resource.data.roomId)).data.displayKey == key
+        && getAfter(/databases/$(database)/documents/lmcRooms/$(request.resource.data.roomId)).data.ownerId == request.auth.uid;
+      allow update: if host() && resource.data.ownerId == request.auth.uid && displayFields(request.resource.data)
+        && request.time.toMillis() < resource.data.expiresAt
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['view','revision','paired'])
+        && request.resource.data.revision == resource.data.revision+1
+        && getAfter(/databases/$(database)/documents/lmcRooms/$(resource.data.roomId)).data.revision == request.resource.data.revision;
+      allow delete: if host() && resource.data.ownerId == request.auth.uid;
+    }
+    match /lmcPairs/{key} {
+      allow get: if host();
+      allow list: if false;
+      allow create: if host() && request.resource.data.keys().hasOnly(['ownerId','roomId','expiresAt','consumed'])
+        && request.resource.data.ownerId == request.auth.uid && future(request.resource.data.expiresAt,1)
+        && request.resource.data.expiresAt <= request.time.toMillis()+600000 && request.resource.data.consumed == false
+        && getAfter(/databases/$(database)/documents/lmcRooms/$(request.resource.data.roomId)).data.codeHash == key;
+      allow update: if host() && resource.data.ownerId == request.auth.uid && resource.data.consumed == false
+        && request.time.toMillis() < resource.data.expiresAt && request.resource.data.consumed == true
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['consumed']);
+      allow delete: if host();
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

@@ -1,0 +1,96 @@
+/* Original questions. Scripture references are provided for checking answers. */
+window.STARTER_GAME = {
+  schemaVersion: 1,
+  title: "Bible Basics",
+  categories: [
+    { name: "In the Beginning", questions: [
+      { value: 100, question: "What did God create on the first day?", answer: "Light", reference: "Genesis 1:3–5" },
+      { value: 200, question: "What were the names of the first man and woman?", answer: "Adam and Eve", reference: "Genesis 2:7, 18–23; 3:20" },
+      { value: 300, question: "Who built an ark to survive the great flood?", answer: "Noah", reference: "Genesis 6:13–22" },
+      { value: 400, question: "What sign did God put in the sky as a reminder of His covenant with Noah?", answer: "A rainbow", reference: "Genesis 9:12–17" },
+      { value: 500, question: "Whose name did God change to Israel?", answer: "Jacob", reference: "Genesis 32:28" }
+    ]},
+    { name: "Who Am I?", questions: [
+      { value: 100, question: "I defeated Goliath with a sling and a stone. Who am I?", answer: "David", reference: "1 Samuel 17:49–50" },
+      { value: 200, question: "I was swallowed by a great fish after running from God. Who am I?", answer: "Jonah", reference: "Jonah 1:1–3, 17" },
+      { value: 300, question: "I was a queen who risked my life to help save the Jewish people. Who am I?", answer: "Esther", reference: "Esther 4:14–16; 7:3–6" },
+      { value: 400, question: "I interpreted Pharaoh’s dreams and helped Egypt prepare for a famine. Who am I?", answer: "Joseph", reference: "Genesis 41:25–40" },
+      { value: 500, question: "Ruth chose to stay with me and said, ‘Your people shall be my people.’ Who am I?", answer: "Naomi", reference: "Ruth 1:16" }
+    ]},
+    { name: "Jesus & Friends", questions: [
+      { value: 100, question: "In what town was Jesus born?", answer: "Bethlehem", reference: "Matthew 2:1" },
+      { value: 200, question: "Who baptized Jesus in the Jordan River?", answer: "John the Baptist", reference: "Matthew 3:13–17" },
+      { value: 300, question: "Which disciple denied knowing Jesus three times?", answer: "Peter", reference: "Luke 22:54–62" },
+      { value: 400, question: "Which tax collector climbed a sycamore tree to see Jesus?", answer: "Zacchaeus", reference: "Luke 19:1–10" },
+      { value: 500, question: "Who met the risen Jesus on the road to Damascus?", answer: "Saul, also known as Paul", reference: "Acts 9:1–9; 13:9" }
+    ]},
+    { name: "Signs & Wonders", questions: [
+      { value: 100, question: "What did Jesus turn water into at a wedding in Cana?", answer: "Wine", reference: "John 2:1–11" },
+      { value: 200, question: "What did Jesus do when the disciples were afraid during a storm on the lake?", answer: "He calmed the wind and the waves.", reference: "Mark 4:35–41" },
+      { value: 300, question: "What food did a boy bring that Jesus used to feed a crowd of about 5,000 men?", answer: "Five barley loaves and two fish", reference: "John 6:9–13" },
+      { value: 400, question: "What was the name of the man Jesus called out of a tomb after four days?", answer: "Lazarus", reference: "John 11:17, 43–44" },
+      { value: 500, question: "Which disciple stepped out of the boat and walked on the water toward Jesus?", answer: "Peter", reference: "Matthew 14:28–29" }
+    ]},
+    { name: "Finish the Verse", questions: [
+      { value: 100, question: "‘The LORD is my ______; I shall not want.’", answer: "Shepherd", reference: "Psalm 23:1 (KJV)" },
+      { value: 200, question: "‘For God so loved the ______, that he gave his only begotten Son…’", answer: "World", reference: "John 3:16 (KJV)" },
+      { value: 300, question: "‘Thy word is a lamp unto my feet, and a ______ unto my path.’", answer: "Light", reference: "Psalm 119:105 (KJV)" },
+      { value: 400, question: "‘But the fruit of the Spirit is love, joy, ______…’", answer: "Peace", reference: "Galatians 5:22 (KJV)" },
+      { value: 500, question: "‘Blessed are the pure in heart: for they shall ______.’", answer: "See God", reference: "Matthew 5:8 (KJV)" }
+    ]},
+    { name: "Bible Numbers", questions: [
+      { value: 100, question: "How many apostles did Jesus choose?", answer: "12", reference: "Luke 6:13" },
+      { value: 200, question: "How many commandments did God write on the stone tablets?", answer: "10", reference: "Deuteronomy 4:13" },
+      { value: 300, question: "How many days and nights did Jesus fast in the wilderness?", answer: "40", reference: "Matthew 4:2" },
+      { value: 400, question: "How many days did the Israelites march around Jericho before its walls fell?", answer: "7 days", reference: "Joshua 6:3–5, 15–20" },
+      { value: 500, question: "How many people were added to the believers at Pentecost after Peter’s message?", answer: "About 3,000", reference: "Acts 2:41" }
+    ]}
+  ]
+};
+
+window.STARTER_GAME.categories[1].questions[2].dailyDouble = true;
+window.STARTER_GAME.doubleJeopardy = { categories: [
+  { name: "Old Testament Adventures", questions: [
+    { value:200, question:"Who heard God speak from a burning bush?", answer:"Moses", reference:"Exodus 3:1–6" },
+    { value:400, question:"Who was thrown into a den of lions after continuing to pray to God?", answer:"Daniel", reference:"Daniel 6:10–23" },
+    { value:600, question:"Which prophet prayed on Mount Carmel, and God answered with fire?", answer:"Elijah", reference:"1 Kings 18:36–39" },
+    { value:800, question:"Name the three men who survived the fiery furnace.", answer:"Shadrach, Meshach, and Abednego", reference:"Daniel 3:19–27" },
+    { value:1000, question:"Who led the work of rebuilding Jerusalem’s wall after the exile?", answer:"Nehemiah", reference:"Nehemiah 2:17–18; 6:15" }
+  ]},
+  { name: "Teachings of Jesus", questions: [
+    { value:200, question:"In Jesus’ parable, who stopped to help the injured traveler when others passed by?", answer:"A Samaritan", reference:"Luke 10:30–37" },
+    { value:400, question:"In Jesus’ explanation of the parable of the sower, what does the seed represent?", answer:"The word of God / God’s message", reference:"Mark 4:14; Luke 8:11" },
+    { value:600, question:"In the parable of the lost son, what did the father do when he saw his son returning?", answer:"He ran to him, embraced him, and kissed him.", reference:"Luke 15:20" },
+    { value:800, question:"Jesus compared a person who hears His words and puts them into practice to a wise builder. What did that builder build on?", answer:"Rock / a rock foundation", reference:"Matthew 7:24–27", dailyDouble:true },
+    { value:1000, question:"What two commandments did Jesus say sum up the Law and the Prophets?", answer:"Love God with all your heart, soul, and mind; love your neighbor as yourself.", reference:"Matthew 22:37–40" }
+  ]},
+  { name: "People of Faith", questions: [
+    { value:200, question:"Who prayed for a son and later dedicated Samuel to the Lord?", answer:"Hannah", reference:"1 Samuel 1:10–20, 24–28" },
+    { value:400, question:"Which disciple in Damascus did God send to Saul so he could regain his sight?", answer:"Ananias", reference:"Acts 9:10–18" },
+    { value:600, question:"Which seller of purple cloth in Philippi welcomed Paul and his companions into her home?", answer:"Lydia", reference:"Acts 16:14–15" },
+    { value:800, question:"Who was praying and singing hymns in prison with Paul when an earthquake opened the doors?", answer:"Silas", reference:"Acts 16:25–26" },
+    { value:1000, question:"Which husband-and-wife team explained the way of God more accurately to Apollos?", answer:"Priscilla and Aquila", reference:"Acts 18:24–26" }
+  ]},
+  { name: "Prayer & Praise", questions: [
+    { value:200, question:"In the Lord’s Prayer, what are we asking God to give us ‘this day’?", answer:"Our daily bread", reference:"Matthew 6:11" },
+    { value:400, question:"Complete this instruction from 1 Thessalonians: ‘Pray without ______.’", answer:"Ceasing / continually", reference:"1 Thessalonians 5:17" },
+    { value:600, question:"Which king is named as the author in the heading of Psalm 23?", answer:"David", reference:"Psalm 23, heading" },
+    { value:800, question:"In Isaiah’s vision, what word did the seraphim repeat three times to describe the Lord?", answer:"Holy", reference:"Isaiah 6:3" },
+    { value:1000, question:"Which prophet declared that even if the crops failed and the stalls were empty, he would still rejoice in the Lord?", answer:"Habakkuk", reference:"Habakkuk 3:17–18" }
+  ]},
+  { name: "Easter & the Church", questions: [
+    { value:200, question:"According to Matthew, who rolled back the stone at Jesus’ tomb?", answer:"An angel of the Lord", reference:"Matthew 28:2" },
+    { value:400, question:"Which woman recognized the risen Jesus when He called her by name near the tomb?", answer:"Mary Magdalene", reference:"John 20:11–18" },
+    { value:600, question:"Who filled the believers at Pentecost, enabling them to speak in other languages?", answer:"The Holy Spirit", reference:"Acts 2:1–4" },
+    { value:800, question:"To which village were two disciples walking when the risen Jesus joined them?", answer:"Emmaus", reference:"Luke 24:13–35" },
+    { value:1000, question:"Which follower of Jesus prayed for those killing him as he was being stoned?", answer:"Stephen", reference:"Acts 7:54–60", dailyDouble:true }
+  ]},
+  { name: "Bible Connections", questions: [
+    { value:200, question:"Ruth was the daughter-in-law of which woman?", answer:"Naomi", reference:"Ruth 1:3–5, 16" },
+    { value:400, question:"Isaac was the son of which couple?", answer:"Abraham and Sarah", reference:"Genesis 21:1–3" },
+    { value:600, question:"Elizabeth and Zechariah were the parents of which person?", answer:"John the Baptist", reference:"Luke 1:5–25, 57–63" },
+    { value:800, question:"Which prophet saw a vision of a valley full of dry bones coming to life?", answer:"Ezekiel", reference:"Ezekiel 37:1–14" },
+    { value:1000, question:"Paul remembered Timothy’s sincere faith, which first lived in his grandmother and mother. Name both women.", answer:"Lois, his grandmother, and Eunice, his mother", reference:"2 Timothy 1:5" }
+  ]}
+]};
+window.STARTER_GAME.finalJeopardy = { category:"Faith in Action", question:"According to 1 Corinthians 13:13, what three things remain, and which is the greatest?", answer:"Faith, hope, and love remain. The greatest is love.", reference:"1 Corinthians 13:13" };
