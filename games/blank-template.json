@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "title": "My Bible Game",
+  "categories": [
+    {
+      "name": "Category 1",
+      "questions": [
+        {
+          "value": 100,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 200,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 300,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 400,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 500,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        }
+      ]
+    },
+    {
+      "name": "Category 2",
+      "questions": [
+        {
+          "value": 100,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 200,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 300,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 400,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 500,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        }
+      ]
+    },
+    {
+      "name": "Category 3",
+      "questions": [
+        {
+          "value": 100,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 200,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 300,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 400,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        },
+        {
+          "value": 500,
+          "question": "",
+          "answer": "",
+          "reference": ""
+        }
+      ]
+    }
+  ]
+}
