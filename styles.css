@@ -42,3 +42,35 @@ dialog{color:var(--text);background:#111a2c;border:1px solid #344058;border-radi
 .tv-score-area .team-name{font-size:clamp(22px,2.2vw,38px)}
 .tv-score-area .choosing-badge{font-size:clamp(11px,.95vw,16px)}
 @media(max-width:760px){.team-card{min-height:118px}.choosing-badge{font-size:10px;padding:5px 7px;letter-spacing:.3px}.responding-team{max-width:calc(50% - 6px);padding:10px;font-size:13px}.responding-status{font-size:9px}.tv-turn-callout{padding:12px 16px}}
+
+/* Scripture stays in answer review; only the host changes the verse page. */
+.clue-inner.scripture-open .clue-content>:not(#scripture-panel){display:none!important}
+.clue-inner.scripture-open .clue-content{padding:18px 4px;gap:0}
+.scripture-panel{display:flex;flex-direction:column;width:100%;max-width:1080px;max-height:min(55dvh,560px);min-height:180px;border:1px solid #536984;border-radius:14px;background:#0b1528;text-align:left;overflow:hidden}
+.scripture-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 22px;border-bottom:1px solid #34445f;flex-shrink:0}
+.scripture-heading .eyebrow,.tv-scripture-heading .eyebrow{color:var(--mint)}
+.scripture-heading h3{font-size:clamp(18px,2vw,28px);line-height:1.25;margin:7px 0 0;color:var(--text);overflow-wrap:anywhere}
+.scripture-page-label{font-size:11px;color:var(--muted);padding-top:4px;white-space:nowrap}
+.scripture-content{padding:6px 22px 12px;overflow:auto;overscroll-behavior:contain}
+.scripture-verse{font-size:clamp(17px,1.6vw,25px);line-height:1.65;color:var(--text);margin:15px 0;white-space:pre-line;overflow-wrap:anywhere}
+.scripture-verse sup{color:var(--mint);font-size:.65em;font-weight:800;vertical-align:super;margin-right:3px}
+.scripture-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid #34445f;flex-shrink:0}
+.scripture-notice{font-size:17px;line-height:1.7;color:var(--muted);padding:12px 0}
+.scripture-heading-note{font-size:12px;color:var(--muted);margin:0;padding:0 22px 12px}
+.tv-scripture-card{justify-content:flex-start;align-items:stretch;text-align:left;padding:24px clamp(24px,4vw,70px)}
+.tv-scripture-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:1px solid #405471;padding-bottom:16px}
+.tv-scripture-heading h2{font-size:clamp(24px,2.7vw,44px);margin:0;line-height:1.2}
+.tv-scripture-content{width:100%;margin:auto 0}
+.tv-scripture-content .scripture-verse{font-size:clamp(22px,2vw,36px);line-height:1.55;margin:18px 0}
+.tv-scripture-card .tv-turn-callout{align-self:center;padding:8px 16px;margin-top:12px}
+.tv-scripture-card .tv-turn-callout strong{font-size:clamp(20px,1.7vw,30px)}
+.tv-scripture-card .tv-turn-state{font-size:12px;padding:6px 9px}
+.tv-question-card .tv-scripture-page{color:var(--mint);font-size:13px;letter-spacing:.5px;text-align:right;margin:0}
+@media(max-width:760px){.scripture-heading{padding:14px;gap:10px}.scripture-heading .eyebrow{font-size:8px}.scripture-content{padding:0 14px 8px}.scripture-verse{font-size:17px;line-height:1.6;margin:13px 0}.scripture-footer{flex-wrap:wrap;padding:10px;gap:8px}.scripture-footer .inline-actions{margin-left:auto}.scripture-footer .button{min-height:34px;font-size:10px;padding:7px 9px}.scripture-page-label{font-size:10px}.clue-inner.scripture-open .clue-content{padding:15px 0}.scripture-panel{max-height:52dvh}.clue-actions #read-scripture-button{flex:1;min-height:42px}.scripture-heading-note{padding:0 14px 10px}}
+@media(max-height:820px) and (min-width:761px){.tv-scripture-card{padding:18px 28px}.tv-scripture-content .scripture-verse{font-size:clamp(19px,1.75vw,27px);line-height:1.4;margin:12px 0}.tv-scripture-heading{padding-bottom:10px}.tv-scripture-heading h2{font-size:28px}.tv-scripture-card .tv-turn-callout{margin-top:8px;padding:6px 12px}.tv-scripture-card .tv-turn-callout strong{font-size:22px}.tv-score-area .team-card{min-height:90px}}
+.scripture-reader{display:block;width:100%;height:285px;border:0;background:#fff;border-radius:8px}
+.scripture-content{padding:10px;flex:1;min-height:120px}
+.tv-scripture-content .scripture-reader{height:300px}
+.niv-attribution{font-size:10px;line-height:1.5;color:#5d6470;margin-top:24px}
+@media(max-width:760px){.scripture-reader{height:235px}.scripture-content{padding:8px}.scripture-footer .inline-actions{margin-left:0}.scripture-panel{max-height:55dvh}}
+@media(max-height:820px) and (min-width:761px){.tv-scripture-content .scripture-reader{height:230px}}

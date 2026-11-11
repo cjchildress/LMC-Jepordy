@@ -2,7 +2,7 @@
   "name": "loogootee-youth-jepordy-github",
   "private": true,
   "scripts": {
-    "test": "node --test tests/projection.test.cjs",
+    "test": "node --test tests/projection.test.cjs tests/scripture.test.cjs",
     "test:firebase": "firebase emulators:exec --project demo-lmc-jepordy --only firestore \"node --test tests/firebase.test.cjs\""
   },
   "devDependencies": {

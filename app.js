@@ -53,7 +53,7 @@
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (saved) {
-      const game = GameCore.validateGame(saved.game);
+      const game = GameCore.validateGame(window.LMC_MIGRATE_STARTER_NIV(saved.game));
       if (saved.version !== 1 || !validTeams(saved.teams)) throw new Error('Invalid saved game');
       state = { ...state, game, teams:saved.teams, activeTeam:saved.activeTeam===1?1:0, used:cleanUsed(saved.used,game), round:saved.round==='double'&&game.doubleJeopardy?'double':saved.round==='final'&&game.finalJeopardy?'final':'single',finalSession:cleanFinal(saved.finalSession,game,saved.teams),finalScored:saved.finalScored===true, settings:{ timer:[0,15,30,45,60].includes(saved.settings?.timer)?saved.settings.timer:30, deductWrong:saved.settings?.deductWrong===true }, history:[] };
       state.dailySession=cleanDaily(saved.dailySession,game,saved.teams,state.round);
@@ -111,7 +111,7 @@
     if(hasProgress()) confirm('Start this game?','This clears the current scores and played questions. Team names and settings stay the same.','Load game',apply); else apply();
   }
   function importGame(text) {
-    try { if(text.length>1048576) throw new Error('Choose a game file smaller than 1 MB.'); const game=GameCore.validateGame(JSON.parse(text));$('import-error').textContent='';loadGame(game); }
+    try { if(text.length>1048576) throw new Error('Choose a game file smaller than 1 MB.'); const game=GameCore.validateGame(window.LMC_MIGRATE_STARTER_NIV(JSON.parse(text)));$('import-error').textContent='';loadGame(game); }
     catch(error) { $('import-error').textContent=error instanceof SyntaxError?'This is not valid JSON. Check the file or download a template.':error.message; }
   }
   function download(game,filename) {
@@ -127,6 +127,7 @@
     let content='<header class="sheet-title"><p class="sheet-eyebrow">LOOGOOTEE METHODIST YOUTH JEPORDY</p><h1>'+esc(state.game.title)+'</h1><p>Host answer sheet · '+count+' questions · includes all configured rounds</p></header>';
     for(const [round,label] of groups){content+='<h2 class="sheet-round">'+label+'</h2>'+GameCore.roundCategories(state.game,round).map((category,ci)=>'<section class="sheet-category"><h2><span>'+String(ci+1).padStart(2,'0')+'</span> '+esc(category.name)+'</h2><table><thead><tr><th scope="col">Points</th><th scope="col">Question & answer</th></tr></thead><tbody>'+category.questions.map(q=>'<tr><th scope="row">'+fmt(q.value)+(q.dailyDouble?'<small class="sheet-dd">Daily Double</small>':'')+'</th><td><p class="sheet-question">'+esc(q.question)+'</p><p class="sheet-answer"><strong>Answer:</strong> '+esc(q.answer)+'</p>'+(q.reference?'<p class="sheet-reference">'+esc(q.reference)+'</p>':'')+'</td></tr>').join('')+'</tbody></table></section>').join('');}
     if(state.game.finalJeopardy){const f=state.game.finalJeopardy;content+='<section class="sheet-category"><h2>Final Jeopardy · '+esc(f.category)+'</h2><p class="sheet-question">'+esc(f.question)+'</p><p class="sheet-answer"><strong>Answer:</strong> '+esc(f.answer)+'</p><p class="sheet-reference">'+esc(f.reference)+'</p></section>';}
+    content+='<p class="niv-attribution">NIV® Scripture: ©1973, 1978, 1984, 2011 Biblica, Inc. Used by permission. All rights reserved worldwide.</p>';
     $('answer-sheet-preview').innerHTML=content;$('print-sheet').innerHTML=content;
   }
   function openAnswerSheet() { prepareAnswerSheet();show('answer-sheet-dialog'); }
@@ -164,6 +165,7 @@
     ['pass-button','wrong-button','correct-button','reveal-button','clue-board-button'].forEach(id=>{$(id).hidden=reviewing;});
     if(daily){$('clue-board-button').hidden=true;document.querySelectorAll('[data-answer-team]').forEach(button=>{button.disabled=true;});}
     $('next-category-button').hidden=!reviewing;
+    updateScripture();
     $('next-category-button').innerHTML=(playedInRound()+1===totalQuestions()?(state.round==='single'&&state.game.doubleJeopardy?'Double Jeopardy':state.game.finalJeopardy?'Final Jeopardy':'See results'):'Next category')+' '+icon('arrow-right');
     $('clue-shortcuts').hidden=reviewing;
     $('clue-shortcuts').innerHTML=daily?'SPACE reveal <span>·</span> Wager locked · finish this question to continue':'SPACE reveal <span>·</span> 1 / 2 select team <span>·</span> ESC return to board';
@@ -174,6 +176,32 @@
     updateTimer();
   }
   function revealAnswer() { if(!pending||pending.review)return;pending.revealed=!pending.revealed;if(pending.revealed)stopTimer();updateClue(); }
+  function updateScripture(){
+    const reference=pending?.question.reference||'',reading=pending?.review?window.LMC_SCRIPTURE.project(pending.scripture,reference):null;
+    $('read-scripture-button').hidden=!pending?.review||!reference.trim();
+    $('read-scripture-button').textContent=reading?'Back to answer':'Read Scripture';
+    $('read-scripture-button').setAttribute('aria-expanded',String(!!reading));
+    document.querySelector('.clue-inner').classList.toggle('scripture-open',!!reading);$('scripture-panel').hidden=!reading;
+    if(!reading){$('scripture-content').replaceChildren();delete $('scripture-content').dataset.reading;return;}
+    $('scripture-reference').textContent=reading.reference;const content=window.LMC_SCRIPTURE.html(reading);if($('scripture-content').dataset.reading!==reading.status+':'+reading.reference){$('scripture-content').innerHTML=content;$('scripture-content').dataset.reading=reading.status+':'+reading.reference;}
+    $('scripture-page-label').textContent=reading.pages?'Page '+reading.page+' of '+reading.pages:'';
+    $('scripture-previous').hidden=reading.pages<2;$('scripture-next').hidden=reading.pages<2;
+    $('scripture-previous').disabled=reading.page<=1;$('scripture-next').disabled=reading.page>=reading.pages;
+    $('scripture-retry').hidden=reading.status!=='error';$('scripture-bible-link').href=window.LMC_SCRIPTURE.readerUrl(reference);
+    $('scripture-heading-note').hidden=!/\bheading\b/i.test(reference);
+  }
+  async function readScripture(retry=false){
+    const clue=pending;if(!clue?.review||!clue.question.reference)return;
+    if(!retry&&clue.scripture?.open){clue.scripture.open=false;updateClue();return;}
+    if(!retry&&clue.scripture?.status==='ready'){clue.scripture.open=true;updateClue();return;}
+    clue.scripture={reference:clue.question.reference,status:'loading',open:true,page:0,blocks:[]};updateClue();
+    try{const result=await window.LMC_SCRIPTURE.load(clue.question.reference);if(pending!==clue||!clue.review)return;result.open=clue.scripture.open;clue.scripture=result;}
+    catch{if(pending!==clue||!clue.review)return;clue.scripture={reference:clue.question.reference,status:'error',open:clue.scripture.open,page:0,blocks:[]};}
+    updateClue();
+  }
+  function scripturePage(direction){if(!pending?.review||pending.scripture?.status!=='ready')return;const reading=pending.scripture,total=window.LMC_SCRIPTURE.pages(reading.blocks).length;reading.page=Math.max(0,Math.min(total-1,reading.page+direction));updateClue();}
+  $('read-scripture-button').addEventListener('click',()=>readScripture());$('scripture-retry').addEventListener('click',()=>readScripture(true));
+  $('scripture-previous').addEventListener('click',()=>scripturePage(-1));$('scripture-next').addEventListener('click',()=>scripturePage(1));
   function answer(status) {
     if(!pending||pending.review)return;const q=pending;
     const transition=GameCore.answerClue(state,q,status,state.settings.deductWrong);
@@ -189,7 +217,7 @@
   }
   function leaveClue() { if(pending?.review)finishClue();else if(pending?.kind==='daily-double'){toast('Finish the locked Daily Double before returning to the board.');}else closeClue(); }
   function closeClue() { stopTimer();pending=null;close('clue-dialog'); }
-  $('clue-dialog').addEventListener('cancel',event=>{event.preventDefault();leaveClue();});
+  $('clue-dialog').addEventListener('cancel',event=>{event.preventDefault();if(pending?.scripture?.open){pending.scripture.open=false;updateClue();$('read-scripture-button').focus();}else leaveClue();});
   function stopTimer() { clearInterval(timerInterval);timerInterval=null;timerEnd=null; }
   function updateTimer() { $('timer-value').textContent=timerRemaining>0?timerRemaining+'s':'Time’s up';$('timer-toggle').classList.toggle('expired',timerRemaining===0);$('timer-toggle').querySelector('[data-icon]').innerHTML=icon(timerInterval?'pause':'play');$('timer-toggle').setAttribute('aria-label',(timerInterval?'Pause':'Start')+' timer, '+timerRemaining+' seconds remaining');$('timer-toggle').disabled=!!pending?.revealed;notifyLive(); }
   function resetTimer() { stopTimer();timerRemaining=state.settings.timer;updateTimer(); }
@@ -313,8 +341,8 @@
   window.LMC_GAME={
     exportSnapshot(){return clone({state,pending,timer:{remaining:timerRemaining,running:!!timerInterval,endAt:timerEnd},resultsShown:$('complete-dialog').open});},
     restoreSnapshot(value){
-      stopTimer();pending=null;document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());state=clone(value.state);state.game=GameCore.validateGame(state.game);render();
-      if(value.pending){if(value.pending.kind==='daily-double'&&!state.dailySession){openClue(value.pending.key);}else{pending=clone(value.pending);presentClue();timerRemaining=value.timer?.running?Math.max(0,Math.ceil((value.timer.endAt-Date.now())/1000)):value.timer?.remaining??state.settings.timer;if(value.timer?.running&&timerRemaining>0&&!pending.revealed)toggleTimer();else updateTimer();}}
+      stopTimer();pending=null;document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());state=clone(value.state);state.game=GameCore.validateGame(window.LMC_MIGRATE_STARTER_NIV(state.game));render();
+      if(value.pending){if(value.pending.kind==='daily-double'&&!state.dailySession){openClue(value.pending.key);}else{pending=clone(value.pending);pending.question=GameCore.questionFor(state,pending.key);presentClue();timerRemaining=value.timer?.running?Math.max(0,Math.ceil((value.timer.endAt-Date.now())/1000)):value.timer?.remaining??state.settings.timer;if(value.timer?.running&&timerRemaining>0&&!pending.revealed)toggleTimer();else updateTimer();}}
       else if(state.dailySession)openClue(state.dailySession.key);
       if(value.resultsShown)complete();persist();
     }

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>NIV Scripture reader</title>
+  <style>
+:root{color-scheme:light;font-family:Arial,sans-serif;color:#152036;background:#fff}
+*{box-sizing:border-box}body{margin:0;padding:8px;line-height:1.55}a{color:#116385}.reader-reference{margin:6px}#reader-status,#reader-fallback{font-size:15px;margin:12px}
+/* Keep the provider's NIV content, attribution, links and logo together. */
+.rtTooltip{position:static!important;inset:auto!important;width:100%!important;max-width:none!important;margin:0!important;box-shadow:none!important;border:0!important;border-radius:8px!important}
+.rtTooltip .rtTooltipBody{font-size:22px!important;line-height:1.6!important;max-height:none!important}
+.rtTooltip .rtTooltipHeader{font-size:18px!important}
+@media(min-width:700px){.rtTooltip .rtTooltipBody{font-size:30px!important;line-height:1.55!important}.rtTooltip .rtTooltipHeader{font-size:20px!important}}
+
+  </style>
+</head>
+<body>
+  <p id="reference" class="reader-reference"></p>
+  <p id="reader-status" role="status">Loading the NIV passage…</p>
+  <p id="reader-fallback" hidden>The passage preview is unavailable. <a id="reader-link" target="_blank" rel="noopener noreferrer">Read the NIV passage in Bible Gateway</a>.</p>
+<script>
+(() => {
+  'use strict';
+  // A sandbox has no cookies or browser storage. Keep optional widget preferences
+  // in this frame only, without granting access to the game or host account.
+  try{void document.cookie;}catch{Object.defineProperty(document,'cookie',{get:()=>'',set:()=>{}});}
+  for(const name of ['localStorage','sessionStorage'])try{void window[name];}catch{const values=new Map();Object.defineProperty(window,name,{value:{getItem:key=>values.get(String(key))??null,setItem:(key,value)=>values.set(String(key),String(value)),removeItem:key=>values.delete(String(key)),clear:()=>values.clear(),key:index=>[...values.keys()][index]??null,get length(){return values.size;}}});}
+
+  const $=id=>document.getElementById(id),reference=new URLSearchParams(location.hash.slice(1)).get('reference')||'';
+  if(!/^(?:[1-3] )?[A-Za-z][A-Za-z. ]*? \d{1,3}:\d{1,3}$/.test(reference)){$('reader-status').textContent='Choose a Scripture verse from answer review.';return;}
+  $('reference').textContent=reference;$('reader-link').href='https://www.biblegateway.com/passage/?'+new URLSearchParams({search:reference,version:'NIV'});
+  // The official Logos widget renders NIV directly, including its own branding.
+  // Verse text is never read, copied, cached or sent through our Firebase room.
+  window.refTagger={settings:{bibleVersion:'NIV',linksOpenNewWindow:true,socialSharing:[],customStyle:{body:{fontSize:'22px',fontFamily:'Arial, sans-serif'},heading:{fontSize:'18px',fontFamily:'Arial, sans-serif'}}}};
+  let opened=false;
+  const observer=new MutationObserver(()=>{
+    const link=document.querySelector('#reference a.rtBibleRef');
+    if(link&&!opened){opened=true;link.dispatchEvent(new MouseEvent('mouseover',{bubbles:true}));}
+    if(document.querySelector('.rtTooltip')){$('reader-status').hidden=true;$('reference').hidden=true;}
+  });
+  observer.observe(document.body,{childList:true,subtree:true});
+  const script=document.createElement('script');script.src='https://api.reftagger.com/v2/RefTagger.js';script.referrerPolicy='no-referrer';
+  script.onerror=()=>{$('reader-status').hidden=true;$('reader-fallback').hidden=false;observer.disconnect();};document.head.append(script);
+  setTimeout(()=>{$('reader-status').hidden=true;$('reader-fallback').hidden=!!document.querySelector('.rtTooltip');},12000);
+})();
+</script>
+</body>
+</html>

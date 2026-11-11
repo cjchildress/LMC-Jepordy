@@ -116,3 +116,14 @@ npm run test:firebase
 ```
 
 The emulator uses a demo project and a test host UID. It verifies pairing with computers whose clocks are ahead or behind, one-use codes, answer privacy, expiry, and host-only access. TV-session expiry is based on Firebase server time so a fast device clock cannot cause a permission error.
+
+
+## Read NIV Scripture during answer review
+
+After a correct answer, no answer, or completed steal, choose **Read Scripture** before **Next category**. Read the saved reference in the **New International Version (2011)** on the host screen and connected TV. **Previous verses** and **Next verses** move one verse at a time on both screens. **Back to answer** returns to the answer; **Next category** completes normal scoring and turns. Daily Double answer review is supported too.
+
+NIV text comes directly from the official [Logos RefTagger](https://www.logos.com/reftagger) reader, with its branding and links intact. It requires an internet connection and no additional account or API key. The reader runs in a sandboxed frame with no access to host sign-in or game data. The public-domain bible-api.com index supplies verse numbers only; its verse text is discarded. Firebase synchronizes only the selected reference and page, never a copy of NIV passages. If either provider is unavailable, **Open NIV Bible** opens the full passage in Bible Gateway and leaves the game on answer review.
+
+The bundled Bible Basics questions and printable host sheet use NIV wording, including Finish the Verse and Prayer & Praise. On refresh, exact unchanged questions from older Bible Basics sets update while preserving team names, scores and played questions. Custom wording and imported custom games are preserved. For custom quotations, enter the NIV wording yourself in the question editor.
+
+NIV® Scripture: ©1973, 1978, 1984, 2011 Biblica, Inc. Used by permission. All rights reserved worldwide.
