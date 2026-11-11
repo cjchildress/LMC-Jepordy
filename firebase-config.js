@@ -1,12 +1,12 @@
 // Public Firebase WEB configuration only. Never put a password, admin key,
 // service-account JSON, or GitHub token in this file.
 window.LMC_FIREBASE_CONFIG = {
-  enabled: false,
-  hostUid: 'REPLACE_WITH_HOST_USER_UID',
+  enabled: true,
+  hostUid: 'FbejU5p4MfQ9Q4xL3pDiXv2ywYE3',
   firebase: {
-    apiKey: 'REPLACE_WITH_WEB_API_KEY',
-    authDomain: 'YOUR_PROJECT.firebaseapp.com',
-    projectId: 'YOUR_PROJECT',
-    appId: 'REPLACE_WITH_WEB_APP_ID'
+    apiKey: 'AIzaSyCdytyzgApTqsjL0lmuQ8Yw4rMou_Z9-OU',
+    authDomain: 'lmc-youth-jepordy.firebaseapp.com',
+    projectId: 'lmc-youth-jepordy',
+    appId: '1:31316235060:web:a427da6ced05484c9d8b61'
   }
 };

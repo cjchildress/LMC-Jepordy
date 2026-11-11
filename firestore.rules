@@ -1,7 +1,7 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function host() { return request.auth != null && request.auth.uid == 'REPLACE_WITH_HOST_USER_UID'; }
+    function host() { return request.auth != null && request.auth.uid == 'FbejU5p4MfQ9Q4xL3pDiXv2ywYE3'; }
     function future(expiry, hours) { return expiry is int && expiry > request.time.toMillis() && expiry <= request.time.toMillis() + hours * 3600000 + 60000; }
     function roomFields(d) {
       return d.keys().hasOnly(['ownerId','displayKey','codeHash','codeExpires','expiresAt','paired','revision','mutationId','hostHash','snapshotJson'])
