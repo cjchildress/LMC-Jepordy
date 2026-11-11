@@ -1,0 +1,13 @@
+{
+  "name": "loogootee-youth-jepordy-github",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/projection.test.cjs",
+    "test:firebase": "firebase emulators:exec --project demo-lmc-jepordy --only firestore \"node --test tests/firebase.test.cjs\""
+  },
+  "devDependencies": {
+    "firebase": "13.2.0",
+    "firebase-tools": "15.35.0",
+    "@firebase/rules-unit-testing": "6.0.0"
+  }
+}

@@ -14,6 +14,12 @@ service cloud.firestore {
         && d.ownerId == request.auth.uid && d.roomId is string && d.revision is int && d.paired is bool
         && d.view is map && d.view.keys().hasOnly(['title','round','teams','activeTeam','screen','board','timer','clue','final']);
     }
+    match /lmcClock/{uid} {
+      allow get: if host() && uid == request.auth.uid;
+      allow create, update: if host() && uid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['checkedAt'])
+        && request.resource.data.checkedAt == request.time;
+    }
     match /lmcRooms/{id} {
       allow get: if host() && resource.data.ownerId == request.auth.uid;
       allow list: if false;

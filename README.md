@@ -104,3 +104,15 @@ The supplied starter set has two 30-question boards and one Final question. Its 
 - **Another host tab changed the game:** local changes are preserved. Close extra host tabs, end the old connection, and start a new one using the game saved on your phone.
 
 The package has been tested with Firebase's local Firestore emulator. Your actual GitHub website and Firebase project must be configured before live phone syncing can be verified there.
+
+## Development checks
+
+The website still runs directly on GitHub Pages. Optional developer checks use Node.js 24 and Java 21 for the local Firestore emulator:
+
+```sh
+npm ci
+npm test
+npm run test:firebase
+```
+
+The emulator uses a demo project and a test host UID. It verifies pairing with computers whose clocks are ahead or behind, one-use codes, answer privacy, expiry, and host-only access. TV-session expiry is based on Firebase server time so a fast device clock cannot cause a permission error.
